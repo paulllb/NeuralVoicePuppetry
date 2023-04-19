@@ -5,7 +5,7 @@ from models import create_model
 from util.visualizer import save_images
 from util import html
 from util import util
-from scipy.misc import imresize
+# from scipy.misc import imresize
 
 import torch
 import numpy as np
@@ -131,7 +131,8 @@ if __name__ == '__main__':
         if opt.write_video:
             fake = visuals['fake']
             im = util.tensor2im(fake)
-            im = imresize(im, (opt.display_winsize,opt.display_winsize), interp='bicubic')
+            # im = imresize(im, (opt.display_winsize,opt.display_winsize), interp='bicubic')
+            im = im.resize((opt.display_winsize,opt.display_winsize), Image.BICUBIC)
             im = np.concatenate([im[:,:,2:3], im[:,:,1:2], im[:,:,0:1]],axis=2)
             #video_writer[test_sequence_id].write(np.random.randint(0, 255, (opt.display_winsize,opt.display_winsize,3)).astype('uint8'))
             video_writer[test_sequence_id].write(im.astype('uint8'))

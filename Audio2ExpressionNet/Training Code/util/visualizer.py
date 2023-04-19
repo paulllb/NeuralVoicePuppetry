@@ -5,7 +5,8 @@ import ntpath
 import time
 from . import util
 from . import html
-from scipy.misc import imresize
+from PIL import Image
+# from scipy.misc import imresize
 
 if sys.version_info[0] == 2:
     VisdomExceptionBase = Exception
@@ -29,7 +30,8 @@ def save_images(webpage, visuals, image_path, aspect_ratio=1.0, width=256):
         h, w, _ = im.shape
 
         height = int(width * h / float(w))
-        im = imresize(im, (height,width), interp='bicubic')
+        # im = imresize(im, (height,width), interp='bicubic')
+        im = im.resize((height,width), Image.BICUBIC)
 
         #im = imresize(im, (height,widht), interp='bicubic')
         #if aspect_ratio > 1.0:
@@ -97,7 +99,9 @@ class Visualizer():
                 for label, image in visuals.items():
                     #
                     image_numpy = util.tensor2im(image)
-                    image_numpy = imresize(image_numpy, (h, w), interp='bicubic')
+                    # image_numpy = imresize(image_numpy, (h, w), interp='bicubic')
+                    image_numpy = image_numpy.resize((h, w), Image.BICUBIC)
+
                     image_numpy = image_numpy.transpose([2, 0, 1])
                     label_html_row += '<td>%s</td>' % label
                     images.append(image_numpy)
